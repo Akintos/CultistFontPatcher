@@ -1,0 +1,3 @@
+[submodule "UnityAssetLib"]
+	path = UnityAssetLib
+	url = https://github.com/Akintos/UnityAssetLib
