@@ -15,56 +15,39 @@ namespace CultistFontPatcher
 
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey(registry_key))
             {
-                if (key.GetValue("SteamPath") == null)
-                {
-                    return null;
-                }
-                else
-                {
+                if (key.GetValue("SteamPath") != null)
+                { 
                     string steamPath = key.GetValue("SteamPath").ToString();
-
                     if (Directory.Exists(steamPath))
-                    {
                         return steamPath;
-                    }
-                    else
-                    {
-                        return null;
-                    }
                 }
             }
+            return null;
         }
 
         public static string[] GetLibraryPaths(string steamPath)
         {
             if (!Directory.Exists(steamPath))
-            {
                 throw new DirectoryNotFoundException("Steam path " + steamPath + " not found");
-            }
 
             string libraryVdfPath = Path.Combine(steamPath, @"steamapps\libraryfolders.vdf");
 
             if (!File.Exists(libraryVdfPath))
-            {
-                throw new FileNotFoundException("Library config file " + steamPath + " not found");
-            }
+                throw new FileNotFoundException("Library config file " + libraryVdfPath + " not found");
 
             string libraryVdfData = File.ReadAllText(libraryVdfPath);
 
-            Regex regex = new Regex("\"[0-9]*\"\\s*\"([^\"]*)\"\n");
-
-            MatchCollection mc = regex.Matches(libraryVdfData);
+            MatchCollection mc = Regex.Matches(libraryVdfData, "\"[0-9]*\"\\s*\"([^\"]*)\"\n");
 
             string[] libraryPaths = new string[1 + mc.Count];
 
             libraryPaths[0] = Path.Combine(steamPath, @"steamapps\common");
 
-            int i = 1;
-
-            foreach (Match m in mc)
+            for (int i = 0; i < mc.Count; i++)
             {
-                libraryPaths[i] = Path.Combine(m.Groups[1].Value, @"steamapps\common");
-                i++;
+                var libraryPath = Path.Combine(mc[i].Groups[1].Value, @"steamapps\common");
+                if (Directory.Exists(libraryPath))
+                    libraryPaths[i+1] = libraryPath;
             }
 
             return libraryPaths;

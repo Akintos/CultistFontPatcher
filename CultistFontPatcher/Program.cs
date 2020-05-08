@@ -126,7 +126,7 @@ namespace CultistFontPatcher
                 AssetInfo belgradAsset = f.GetAssetByName("Belgrad");
 
                 var belgradFont = serializer.Deserialize<Font_2019_3_0_f6>(belgradAsset);
-                belgradFont.m_FontData = File.ReadAllBytes("NotoSansKR-Regular.otf");
+                belgradFont.m_FontData = File.ReadAllBytes("NotoSerifCJK-Regular.otf");
 
                 f.ReplaceAsset(belgradAsset.pathID, serializer.Serialize(belgradFont));
                 f.Save("../sharedassets3.assets");
@@ -145,17 +145,17 @@ namespace CultistFontPatcher
 
                 long patchedFontPathId = -1;
 
-                foreach (var name in replaceFontNames)
+                foreach (var assetName in replaceFontNames)
                 {
-                    AssetInfo fontAsset = f.GetAssetByName(name);
+                    AssetInfo fontAsset = f.GetAssetByName(assetName);
                     if (fontAsset == null)
-                        throw new AssetNotFoundException(name);
+                        throw new AssetNotFoundException(assetName);
                     patchedFontPathId = fontAsset.pathID;
                     TMP_FontAsset_1_1_0 oldFont = serializer.Deserialize<TMP_FontAsset_1_1_0>(fontAsset);
 
                     newFont.m_Script = oldFont.m_Script;
                     newFont.material = oldFont.material;
-                    newFont.atlas = oldFont.atlas;
+                    newFont.atlas    = oldFont.atlas;
                     newFont.m_AtlasTextures = oldFont.m_AtlasTextures;
 
                     f.ReplaceAsset(fontAsset.pathID, serializer.Serialize(newFont));
@@ -173,9 +173,9 @@ namespace CultistFontPatcher
                     f.ReplaceAsset(oldFont.m_AtlasTextures[0].m_PathID, serializer.Serialize(atlas));
                 }
 
-                foreach (var name in addFallbackFontNames)
+                foreach (var assetName in addFallbackFontNames)
                 {
-                    AssetInfo fontAsset = f.GetAssetByName(name);
+                    AssetInfo fontAsset = f.GetAssetByName(assetName);
                     TMP_FontAsset_1_1_0 font = serializer.Deserialize<TMP_FontAsset_1_1_0>(fontAsset);
 
                     font.m_FallbackFontAssetTable = new[] { new PPtr() { m_FileID = 0, m_PathID = patchedFontPathId } };
