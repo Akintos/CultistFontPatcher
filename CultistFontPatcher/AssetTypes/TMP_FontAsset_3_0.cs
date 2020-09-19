@@ -7,7 +7,7 @@ using UnityAssetLib.Types;
 namespace CultistFontPatcher.AssetTypes
 {
     [UnitySerializable]
-    public class TMP_FontAsset_1_1_0 : MonoBehaviour
+    public class TMP_FontAsset_3_0 : MonoBehaviour
     {
         public int hashCode;
         public PPtr material;
@@ -28,6 +28,8 @@ namespace CultistFontPatcher.AssetTypes
 
         public PPtr[] m_AtlasTextures;
         public int m_AtlasTextureIndex;
+
+        public bool m_IsMultiAtlasTexturesEnabled;
 
         public GlyphRect[] m_UsedGlyphRects;
         public GlyphRect[] m_FreeGlyphRects;

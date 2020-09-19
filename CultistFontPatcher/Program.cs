@@ -13,7 +13,7 @@ namespace CultistFontPatcher
         private const string GAME_EXE_NAME = "cultistsimulator.exe";
         private const string GAME_DATA_DIR_NAME = "cultistsimulator_Data";
 
-        private const string RESOURCES_FILENAME = "resources.assets";
+        private const string RESOURCES_FILENAME = "sharedassets0.assets";
         private const string FONT_TEXTURE_FILENAME = "KRFontTexture.bin";
 
         private static readonly string[] defaultPaths = {
@@ -92,19 +92,6 @@ namespace CultistFontPatcher
         private static string FindGame()
         {
             Console.WriteLine("게임 설치 경로 탐색중...");
-            var steamPath = SteamFinder.FindSteamPath();
-            if (steamPath != null)
-            {
-                Console.WriteLine("스팀 설치 경로를 찾았습니다.");
-                string[] libraryPaths = SteamFinder.GetLibraryPaths(steamPath);
-
-                foreach (string libraryPath in libraryPaths)
-                {
-                    var matches = Directory.GetDirectories(libraryPath, GAME_DIR_NAME);
-                    if (matches.Length >= 1)
-                        return matches[0];
-                }
-            }
 
             foreach (var possibleDir in defaultPaths)
             {
@@ -112,6 +99,27 @@ namespace CultistFontPatcher
                 {
                     return Path.GetFullPath(possibleDir);
                 }
+            }
+
+            try
+            {
+                var steamPath = SteamFinder.FindSteamPath();
+                if (steamPath != null)
+                {
+                    Console.WriteLine("스팀 설치 경로를 찾았습니다.");
+                    string[] libraryPaths = SteamFinder.GetLibraryPaths(steamPath);
+
+                    foreach (string libraryPath in libraryPaths)
+                    {
+                        var matches = Directory.GetDirectories(libraryPath, GAME_DIR_NAME);
+                        if (matches.Length >= 1)
+                            return matches[0];
+                    }
+                }
+            }
+            catch
+            {
+                
             }
 
             return null;
@@ -141,7 +149,7 @@ namespace CultistFontPatcher
             using (AssetsFile f = AssetsFile.Open(path))
             {
                 UnitySerializer serializer = new UnitySerializer(f);
-                TMP_FontAsset_1_1_0 newFont = serializer.Deserialize<TMP_FontAsset_1_1_0>(Properties.Resources.FontDef);
+                TMP_FontAsset_3_0 newFont = serializer.Deserialize<TMP_FontAsset_3_0>(Properties.Resources.FontDef);
 
                 long patchedFontPathId = -1;
 
@@ -151,7 +159,7 @@ namespace CultistFontPatcher
                     if (fontAsset == null)
                         throw new AssetNotFoundException(assetName);
                     patchedFontPathId = fontAsset.pathID;
-                    TMP_FontAsset_1_1_0 oldFont = serializer.Deserialize<TMP_FontAsset_1_1_0>(fontAsset);
+                    TMP_FontAsset_3_0 oldFont = serializer.Deserialize<TMP_FontAsset_3_0>(fontAsset);
 
                     newFont.m_Script = oldFont.m_Script;
                     newFont.material = oldFont.material;
@@ -162,7 +170,7 @@ namespace CultistFontPatcher
 
                     int imageSize = newFont.m_AtlasWidth;
 
-                    var atlas = serializer.Deserialize<Texture2D_2019_3_0_f6>(f.assets[oldFont.m_AtlasTextures[0].m_PathID]);
+                    var atlas = serializer.Deserialize<Texture2D_2020_1_2_f2>(f.assets[oldFont.m_AtlasTextures[0].m_PathID]);
                     atlas.m_Width = imageSize;
                     atlas.m_Height = imageSize;
                     atlas.m_CompleteImageSize = imageSize * imageSize;
@@ -176,7 +184,7 @@ namespace CultistFontPatcher
                 foreach (var assetName in addFallbackFontNames)
                 {
                     AssetInfo fontAsset = f.GetAssetByName(assetName);
-                    TMP_FontAsset_1_1_0 font = serializer.Deserialize<TMP_FontAsset_1_1_0>(fontAsset);
+                    TMP_FontAsset_3_0 font = serializer.Deserialize<TMP_FontAsset_3_0>(fontAsset);
 
                     font.m_FallbackFontAssetTable = new[] { new PPtr() { m_FileID = 0, m_PathID = patchedFontPathId } };
                     font.fallbackFontAssets = new[] { new PPtr() { m_FileID = 0, m_PathID = patchedFontPathId } };
