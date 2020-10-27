@@ -33,6 +33,8 @@ namespace CultistFontPatcher.AssetTypes
         public bool m_IsReadable;
         [UnityDoNotAlign, UnityMinVersion(2020)]
         public bool m_IsPreProcessed;
+        [UnityDoNotAlign, UnityMinVersion(2020, 1, 2, 2)]
+        public bool m_Unknown1;
         [UnityDoNotAlign]
         public bool m_StreamingMipmaps;
         public int m_StreamingMipmapsPriority;

@@ -40,6 +40,9 @@ namespace CultistFontPatcher
 
         static void Main(string[] args)
         {
+#if DEBUG
+            Patch();
+#else
             try
             {
                 Patch();
@@ -54,6 +57,7 @@ namespace CultistFontPatcher
             }
             Console.WriteLine("아무 키나 누르세요...");
             Console.ReadKey();
+#endif
         }
 
         public static void Patch()
@@ -177,6 +181,8 @@ namespace CultistFontPatcher
                     atlas.m_StreamData.offset = 0;
                     atlas.m_StreamData.size = (uint)(imageSize * imageSize);
                     atlas.m_StreamData.path = FONT_TEXTURE_FILENAME;
+
+                    atlas.imageData = new byte[0];
 
                     f.ReplaceAsset(oldFont.m_AtlasTextures[0].m_PathID, serializer.Serialize(atlas));
                 }
