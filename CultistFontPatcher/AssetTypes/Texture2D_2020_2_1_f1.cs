@@ -7,7 +7,7 @@ using UnityAssetLib.Types;
 namespace CultistFontPatcher.AssetTypes
 {
     [UnitySerializable]
-    public class Texture2D_2020_1_2_f2 : UnityAssetLib.Types.Object
+    public class Texture2D_2020_2_1_f1 : UnityAssetLib.Types.Object
     {
         public TextureFormat Format
         {
@@ -34,7 +34,7 @@ namespace CultistFontPatcher.AssetTypes
         [UnityDoNotAlign, UnityMinVersion(2020)]
         public bool m_IsPreProcessed;
         [UnityDoNotAlign, UnityMinVersion(2020, 1, 2, 2)]
-        public bool m_Unknown1;
+        public bool m_IgnoreMasterTextureLimit;
         [UnityDoNotAlign]
         public bool m_StreamingMipmaps;
         public int m_StreamingMipmapsPriority;
@@ -45,6 +45,9 @@ namespace CultistFontPatcher.AssetTypes
 
         public int m_LightmapFormat;
         public int m_ColorSpace;
+
+        [UnityDoNotAlign, UnityMinVersion(2020, 2)]
+        public int unk1;
 
         public byte[] imageData;
 

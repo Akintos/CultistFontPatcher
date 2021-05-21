@@ -129,22 +129,6 @@ namespace CultistFontPatcher
             return null;
         }
 
-        private static void PatchUnityfont()
-        {
-            using (AssetsFile f = AssetsFile.Open(@"sharedassets3.assets"))
-            {
-                UnitySerializer serializer = new UnitySerializer(f);
-
-                AssetInfo belgradAsset = f.GetAssetByName("Belgrad");
-
-                var belgradFont = serializer.Deserialize<Font_2019_3_0_f6>(belgradAsset);
-                belgradFont.m_FontData = File.ReadAllBytes("NotoSerifCJK-Regular.otf");
-
-                f.ReplaceAsset(belgradAsset.pathID, serializer.Serialize(belgradFont));
-                f.Save("../sharedassets3.assets");
-            }
-        }
-
         private static void PatchSDF(string path)
         {
             string backupPath = path + ".bak";
