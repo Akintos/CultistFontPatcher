@@ -158,7 +158,7 @@ namespace CultistFontPatcher
 
                     int imageSize = newFont.m_AtlasWidth;
 
-                    var atlas = serializer.Deserialize<Texture2D_2020_1_2_f2>(f.assets[oldFont.m_AtlasTextures[0].m_PathID]);
+                    var atlas = serializer.Deserialize<Texture2D_2020_2_1_f1>(f.assets[oldFont.m_AtlasTextures[0].m_PathID]);
                     atlas.m_Width = imageSize;
                     atlas.m_Height = imageSize;
                     atlas.m_CompleteImageSize = imageSize * imageSize;
